@@ -38,7 +38,7 @@ namespace WinPrinterManagement {
     std::wstring setJobJson(const std::wstring& printerName, DWORD jobId, const std::string& command);
     std::wstring getSupportedJobCommandsJson();
     std::wstring getSupportedPrintFormatsJson();
-    std::wstring printDirectJson(const std::wstring& printerName, const std::string& data,
+    std::wstring printDirectJson(const std::wstring& printerName, const uint8_t* data, const size_t dataLen,
         const std::wstring& docName, const std::wstring& dataType);
 }
 

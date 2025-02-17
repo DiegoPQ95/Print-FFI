@@ -300,7 +300,7 @@ namespace WinPrinterManagement {
 
     // Envía datos directamente a la impresora en modo RAW.
     // Devuelve true si tuvo éxito y asigna el ID del trabajo en outJobId.
-    bool printDirect(const std::wstring& printerName, const std::string& data,
+    bool printDirect(const std::wstring& printerName, const uint8_t* data, size_t dataLen,
         const std::wstring& docName, const std::wstring& dataType,
         DWORD& outJobId, DWORD& winErr, std::wstring& errMsg, std::wstring& errStep) {
 
@@ -327,7 +327,7 @@ namespace WinPrinterManagement {
             return false;
         }
         DWORD written = 0;
-        if (!WritePrinter(handle, (LPVOID)data.data(), (DWORD)data.size(), &written) || written != data.size()) {
+        if (!WritePrinter(handle, (LPVOID)data, (DWORD)dataLen, &written) || written != dataLen) {
             winErr = GetLastError();
             errMsg = formatWindowsError(winErr);
             EndPagePrinter(handle);
@@ -504,13 +504,13 @@ namespace WinPrinterManagement {
     }
 
     // printDirectJson
-    std::wstring printDirectJson(const std::wstring& printerName, const std::string& data,
+    std::wstring printDirectJson(const std::wstring& printerName, const uint8_t* data, size_t dataLen,
         const std::wstring& docName, const std::wstring& dataType) {
         DWORD jobId = 0;
         DWORD winErr = 0;
         std::wstring errMsg;
         std::wstring errStep;
-        if (!printDirect(printerName, data, docName, dataType, jobId, winErr, errMsg, errStep)) {
+        if (!printDirect(printerName, data, dataLen, docName, dataType, jobId, winErr, errMsg, errStep)) {
             return buildJsonResult(1, errMsg, winErr, L"null", errStep);
         }
         std::wostringstream oss;

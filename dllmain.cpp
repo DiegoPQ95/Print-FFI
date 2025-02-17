@@ -2,7 +2,7 @@
 #include "win_printer_management.h"
 #include "convert_string_to_utf8.h"
 #include <combaseapi.h>
-
+#include <stdint.h>
 
 
 BOOL APIENTRY DllMain(HMODULE hModule,
@@ -64,8 +64,8 @@ extern "C" {
         return ConvertWStringToUtf8(json);
     }
 
-    __declspec(dllexport) char* PrintDirectJson(const wchar_t* printerName, const char* data, const wchar_t* docName, const wchar_t* dataType) {
-        std::wstring json = WinPrinterManagement::printDirectJson(printerName, data, docName, dataType);
+    __declspec(dllexport) char* PrintDirectJson(const wchar_t* printerName, const uint8_t* data, const size_t dataLen, const wchar_t* docName, const wchar_t* dataType) {
+         std::wstring json = WinPrinterManagement::printDirectJson(printerName, data, dataLen, docName, dataType);
         return ConvertWStringToUtf8(json);
     }
 
